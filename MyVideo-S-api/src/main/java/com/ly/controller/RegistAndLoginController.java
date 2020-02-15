@@ -51,7 +51,7 @@ public class RegistAndLoginController extends BasicController{
 	
 	public UsersVO getUserRedisSessionToken(Users user) {
 		String uniqueToken = UUID.randomUUID().toString();
-		redis.set(USER_REDIS_SESSION+":"+user.getId(), uniqueToken, 1000*60*3);
+		redis.set(USER_REDIS_SESSION+":"+user.getId(), uniqueToken, 60*60);
 		UsersVO usersVO = new UsersVO();
 		BeanUtils.copyProperties(user, usersVO);
 		usersVO.setUserToken(uniqueToken);
