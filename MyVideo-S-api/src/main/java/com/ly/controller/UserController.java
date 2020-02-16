@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.apache.catalina.User;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.druid.stat.TableStat.Name;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.ly.pojo.Users;
+import com.ly.pojo.vo.UsersVO;
 import com.ly.service.UserService;
 import com.ly.utils.IMoocJSONResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -78,6 +83,19 @@ public class UserController {
 		user.setFaceImage(dataPath);
 		userService.updateUserInfo(user);
 		return IMoocJSONResult.ok(dataPath);
+	}
+	
+	@PostMapping("/query")
+	@ApiOperation(value="用户信息查询",notes="用户信息查询接口")
+	@ApiImplicitParam(name="userId",value="用户ID",required=true,dataType="String",paramType="query")
+	public IMoocJSONResult queryUserInfo(String userId)throws Exception{
+		if(StringUtils.isBlank(userId)) {
+			return IMoocJSONResult.errorMsg("用户ID不能为空");
+		}
+		Users users=userService.queryUserInfo(userId);
+		UsersVO usersVO = new UsersVO();
+		BeanUtils.copyProperties(users, usersVO);
+		return IMoocJSONResult.ok(usersVO);
 	}
 	
 	

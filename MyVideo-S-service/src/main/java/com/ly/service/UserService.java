@@ -24,4 +24,9 @@ public interface UserService {
 	 * @Description:用户信息更新/修改
 	 */
 	public void updateUserInfo(Users user);
+	
+	/**
+	 * @Description:获取用户信息
+	 */
+	public Users queryUserInfo(String userId);
 }

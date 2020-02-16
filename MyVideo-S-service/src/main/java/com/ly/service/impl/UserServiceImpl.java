@@ -55,6 +55,15 @@ public class UserServiceImpl implements UserService {
 		Users users = usermapper.selectOneByExample(example);
 		return users;
 	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public Users queryUserInfo(String userId) {
+		Example example = new Example(Users.class);
+		example.createCriteria().andEqualTo("id",userId);
+		return usermapper.selectOneByExample(example);
+	}
+	
 	
 
 }
