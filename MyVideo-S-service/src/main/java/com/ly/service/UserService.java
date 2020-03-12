@@ -29,4 +29,37 @@ public interface UserService {
 	 * @Description:获取用户信息
 	 */
 	public Users queryUserInfo(String userId);
+	
+	/**
+	 * @Description:根据openID查询用户
+	 */
+	public Users queryUserIdIsExist(String userId);
+	
+	/**
+	 * @Description:查询用户是否已经点赞过该视屏
+	 * @param userId
+	 * @param videoId
+	 * @return
+	 */
+	public boolean isUserLikeVideo(String userId,String videoId);
+	
+	
+	/**
+	 * @Description:增加用户和粉丝关联关系
+	 * @param userId
+	 * @param fanId
+	 */
+	public void setUserAndFans(String userId,String fanId);
+	
+	/**
+	 * @Description:移除用户和粉丝的关联关系
+	 * @param userId
+	 * @param fanId
+	 */
+	public void removeUserAndFans(String userId,String fanId);
+	
+	/**
+	 * @Description:查询userId与FanId是否有关系
+	 */
+	public boolean isYourFans(String userId,String fanId);
 }

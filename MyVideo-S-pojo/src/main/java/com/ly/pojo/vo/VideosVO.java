@@ -16,9 +16,39 @@ public class VideosVO {
     private Long likeCounts;
     private Integer status;
     private Date createTime;
+    private String kind;
 
     private String faceImage;
     private String nickname;
+    
+    private Integer imageWidth;
+    private Integer imageHeight;
+    
+    
+    
+	public Integer getImageWidth() {
+		return imageWidth;
+	}
+
+	public void setImageWidth(Integer imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
+	public Integer getImageHeight() {
+		return imageHeight;
+	}
+
+	public void setImageHeight(Integer imageHeight) {
+		this.imageHeight = imageHeight;
+	}
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
 
 	public String getFaceImage() {
 		return faceImage;

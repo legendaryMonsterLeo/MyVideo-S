@@ -11,7 +11,7 @@ package com.ly.utils;
  * 				502：拦截器拦截到用户token出错
  * 				555：异常抛出信息
  */
-public class IMoocJSONResult {
+public class VideoJSONResult {
 
     // 响应业务状态
     private Integer status;
@@ -24,45 +24,45 @@ public class IMoocJSONResult {
     
     private String ok;	// 不使用
 
-    public static IMoocJSONResult build(Integer status, String msg, Object data) {
-        return new IMoocJSONResult(status, msg, data);
+    public static VideoJSONResult build(Integer status, String msg, Object data) {
+        return new VideoJSONResult(status, msg, data);
     }
 
-    public static IMoocJSONResult ok(Object data) {
-        return new IMoocJSONResult(data);
+    public static VideoJSONResult ok(Object data) {
+        return new VideoJSONResult(data);
     }
 
-    public static IMoocJSONResult ok() {
-        return new IMoocJSONResult(null);
+    public static VideoJSONResult ok() {
+        return new VideoJSONResult(null);
     }
     
-    public static IMoocJSONResult errorMsg(String msg) {
-        return new IMoocJSONResult(500, msg, null);
+    public static VideoJSONResult errorMsg(String msg) {
+        return new VideoJSONResult(500, msg, null);
     }
     
-    public static IMoocJSONResult errorMap(Object data) {
-        return new IMoocJSONResult(501, "error", data);
+    public static VideoJSONResult errorMap(Object data) {
+        return new VideoJSONResult(501, "error", data);
     }
     
-    public static IMoocJSONResult errorTokenMsg(String msg) {
-        return new IMoocJSONResult(502, msg, null);
+    public static VideoJSONResult errorTokenMsg(String msg) {
+        return new VideoJSONResult(502, msg, null);
     }
     
-    public static IMoocJSONResult errorException(String msg) {
-        return new IMoocJSONResult(555, msg, null);
+    public static VideoJSONResult errorException(String msg) {
+        return new VideoJSONResult(555, msg, null);
     }
 
-    public IMoocJSONResult() {
+    public VideoJSONResult() {
 
     }
 
-    public IMoocJSONResult(Integer status, String msg, Object data) {
+    public VideoJSONResult(Integer status, String msg, Object data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
     }
 
-    public IMoocJSONResult(Object data) {
+    public VideoJSONResult(Object data) {
         this.status = 200;
         this.msg = "OK";
         this.data = data;

@@ -21,4 +21,10 @@ public class BgmServiceImpl implements BgmService{
 		return bgmMapper.selectAll();
 	}
 	
+	@Override
+	public Bgm queryBgmById(String bgmId) {
+		Bgm bgm = new Bgm();
+		bgm.setId(bgmId);
+		return bgmMapper.selectOne(bgm);
+	}
 }

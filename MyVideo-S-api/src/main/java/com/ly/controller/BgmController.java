@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ly.service.BgmService;
-import com.ly.utils.IMoocJSONResult;
+import com.ly.utils.VideoJSONResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +20,7 @@ public class BgmController {
 	
 	@ApiOperation(value="获取BGM列表",notes="获取BGM列表接口")
 	@PostMapping("/list")
-	public IMoocJSONResult getBgmList() {
-		return IMoocJSONResult.ok(bgmservice.queryBgmList());
+	public VideoJSONResult getBgmList() {
+		return VideoJSONResult.ok(bgmservice.queryBgmList());
 	}
 }

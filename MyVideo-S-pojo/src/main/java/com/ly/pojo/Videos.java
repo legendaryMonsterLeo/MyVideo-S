@@ -30,7 +30,12 @@ public class Videos {
      */
     @Column(name = "video_path")
     private String videoPath;
-
+    
+    /**
+     * 视频种类
+     */
+    @Column(name = "kind")
+    private String kind;
     /**
      * 视频秒数
      */
@@ -60,6 +65,12 @@ public class Videos {
      */
     @Column(name = "like_counts")
     private Long likeCounts;
+    
+    @Column(name = "imageWidth")
+    private Integer imageWidth;
+    
+    @Column(name = "imageHeight")
+    private Integer imageHeight;
 
     /**
      * 视频状态：
@@ -293,4 +304,30 @@ public class Videos {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+
+	public Integer getImageWidth() {
+		return imageWidth;
+	}
+
+	public void setImageWidth(Integer imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
+	public Integer getImageHeight() {
+		return imageHeight;
+	}
+
+	public void setImageHeight(Integer imageHeight) {
+		this.imageHeight = imageHeight;
+	}
+    
+    
 }

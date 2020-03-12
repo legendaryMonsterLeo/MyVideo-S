@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.ly.pojo.Users;
 import com.ly.pojo.vo.UsersVO;
 import com.ly.service.UserService;
-import com.ly.utils.IMoocJSONResult;
+import com.ly.utils.VideoJSONResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,14 +36,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@PostMapping("/checkLife")
+	@ApiOperation(value="检查是否需要授权",notes="检查是否需要授权")
+	public VideoJSONResult checkLife() {
+		System.out.println("检查是否需要授权");
+		return VideoJSONResult.ok();
+	}
 	
 	@PostMapping("/uploadFace")
 	@ApiOperation(value="用户头像上传",notes="用户头像上传接口")
 	@ApiImplicitParam(name="userId",dataType="String",paramType="query",required=true,value="用户ID")
-	public IMoocJSONResult uploadFace(String userId,@RequestParam("file")MultipartFile[] files)throws Exception{
+	public VideoJSONResult uploadFace(String userId,@RequestParam("file")MultipartFile[] files)throws Exception{
 		
 		if(StringUtils.isBlank(userId)) {
-			return IMoocJSONResult.errorMsg("用户id不能为空");
+			return VideoJSONResult.errorMsg("用户id不能为空");
 		}
 		String fileSpace = "E:/MyVideo_data";
 		String dataPath = "/"+userId+"/face";
@@ -67,11 +73,11 @@ public class UserController {
 					IOUtils.copy(inputStream, fileOutputStream);
 				}
 			}else {
-				return IMoocJSONResult.errorMsg("上传出错");
+				return VideoJSONResult.errorMsg("上传出错");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return IMoocJSONResult.errorMsg("上传出错");
+			return VideoJSONResult.errorMsg("上传出错");
 		}finally {
 			if(fileOutputStream!=null) {
 				fileOutputStream.flush();
@@ -82,21 +88,40 @@ public class UserController {
 		user.setId(userId);
 		user.setFaceImage(dataPath);
 		userService.updateUserInfo(user);
-		return IMoocJSONResult.ok(dataPath);
+		return VideoJSONResult.ok(dataPath);
 	}
 	
 	@PostMapping("/query")
 	@ApiOperation(value="用户信息查询",notes="用户信息查询接口")
 	@ApiImplicitParam(name="userId",value="用户ID",required=true,dataType="String",paramType="query")
-	public IMoocJSONResult queryUserInfo(String userId)throws Exception{
+	public VideoJSONResult queryUserInfo(String userId,String fanId)throws Exception{
 		if(StringUtils.isBlank(userId)) {
-			return IMoocJSONResult.errorMsg("用户ID不能为空");
+			return VideoJSONResult.errorMsg("用户ID不能为空");
 		}
 		Users users=userService.queryUserInfo(userId);
 		UsersVO usersVO = new UsersVO();
 		BeanUtils.copyProperties(users, usersVO);
-		return IMoocJSONResult.ok(usersVO);
+		usersVO.setFollow(userService.isYourFans(userId, fanId));
+		return VideoJSONResult.ok(usersVO);
 	}
 	
+	@PostMapping("/follow")
+	public VideoJSONResult follow(String userId,String fanId)throws Exception {
+		if(StringUtils.isBlank(fanId) || StringUtils.isBlank(userId)) {
+			return VideoJSONResult.errorMsg("请求参数出错");
+		}
+		
+		userService.setUserAndFans(userId, fanId);
+		return VideoJSONResult.ok("关注成功");
+	}
+	
+	@PostMapping("/notFollow")
+	public VideoJSONResult notFollow(String userId,String fanId)throws Exception {
+		if(StringUtils.isBlank(fanId) || StringUtils.isBlank(userId)) {
+			return VideoJSONResult.errorMsg("请求参数出错");
+		}
+		userService.removeUserAndFans(userId, fanId);
+		return VideoJSONResult.ok("取消关注成功");
+	}
 	
 }

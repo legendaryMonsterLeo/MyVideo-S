@@ -17,5 +17,8 @@
     <result column="like_counts" property="likeCounts" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="kind" property="kind" jdbcType="VARCHAR" />
+    <result column="imageWidth" property="imageWidth" jdbcType="INTEGER" />
+    <result column="imageHeight" property="imageHeight" jdbcType="INTEGER" />
   </resultMap>
 </mapper>
