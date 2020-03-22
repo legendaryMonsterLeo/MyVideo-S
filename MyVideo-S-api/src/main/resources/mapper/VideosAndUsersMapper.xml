@@ -23,8 +23,7 @@
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="create_time" property="createTime"
 			jdbcType="TIMESTAMP" />
-		<result column="kind" property="kind"
-			jdbcType="VARCHAR" />
+		<result column="kind" property="kind" jdbcType="VARCHAR" />
 
 		<result column="face_image" property="faceImage"
 			jdbcType="VARCHAR" />
@@ -32,31 +31,112 @@
 			jdbcType="VARCHAR" />
 	</resultMap>
 
+	<resultMap type="com.ly.pojo.vo.ObserverVo"
+		id="ObserverResultMap">
+		<result column="face_image" property="faceImage"
+			jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname"
+			jdbcType="VARCHAR" />
+		<result column="photho1" property="photho1" jdbcType="VARCHAR" />
+		<result column="photho2" property="photho2" jdbcType="VARCHAR" />
+		<result column="photho3" property="photho3" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="queryForFollow" resultMap="ObserverResultMap">
+		SELECT
+	user_id,
+	face_image,
+	nickname,
+	group_concat(cover_path) photho1
+FROM
+	(
+		SELECT
+			u.nickname AS nickname,
+			u.id AS user_id,
+			u.face_image AS face_image,
+			v.id AS video_id,
+			v.cover_path AS cover_path,
+			v.create_time AS CREATE_TIME
+		FROM
+			users u
+		LEFT JOIN videos v ON u.id = v.user_id
+	WHERE
+		v.user_id IN (
+			SELECT
+				uf.user_id
+			FROM
+				users_fans uf
+			WHERE
+				uf.fan_id = #{userId}
+		)
+	ORDER BY
+		v.create_time desc
+	) AS a
+GROUP BY
+	a.user_id
+	</select>
+
 	<select id="queryAllVideoVoList" resultMap="BaseResultMap">
-		select v.*,u.face_image as face_image,u.nickname as nickname from videos v
+		select v.*,u.face_image as face_image,u.nickname as nickname from
+		videos v
 		left join users u on u.id = v.user_id
 		where 1=1 and v.status=1
 		<if test=" desc!=null and desc.trim()!='' ">
-		and v.video_desc like '%${desc}%'
+			and v.video_desc like '%${desc}%'
+		</if>
+		<if test=" userId!=null and userId.trim()!='' ">
+			and v.user_id like '%${userId}%'
 		</if>
 		order by v.create_time desc
 	</select>
-	
+
 	<update id="plusVideoCount" parameterType="String">
-		update videos set like_counts=like_counts+1 where id=#{videoId}
+		update videos set
+		like_counts=like_counts+1 where id=#{videoId}
 	</update>
-	
+
 	<update id="subVideoCount" parameterType="String">
-		update videos set like_counts=like_counts-1 where id=#{videoId}
+		update videos set
+		like_counts=like_counts-1 where id=#{videoId}
 	</update>
-	
-	<select id="queryMyFollowVideos" resultMap="BaseResultMap" parameterType="String">
-		select v.*,u.face_image as face_image,u.nickname as nickname from videos v 
+
+	<select id="queryMyFollowVideos" resultMap="BaseResultMap"
+		parameterType="String">
+		select v.*,u.face_image as face_image,u.nickname as
+		nickname from videos v
 		left join users u on v.user_id = u.id
-		where 
-			v.user_id in (select uf.user_id from users_fans uf where uf.fan_id = #{userId})
-			and v.status = 1
-			order by v.create_time desc
+		where
+		v.user_id in (select uf.user_id from users_fans uf where uf.fan_id =
+		#{userId})
+		and v.status = 1
+		order by v.create_time desc
 	</select>
-	
+
+	<select id="queryMyLikeVideos" resultMap="BaseResultMap"
+		parameterType="String">
+		select v.*,u.face_image as face_image,u.nickname as
+		nickname from videos v
+		left join users u on v.user_id = u.id
+		where
+		v.id
+		in (select ulv.video_id from users_like_videos ulv where ulv.user_id
+		=
+		#{userId})
+		and v.status = 1
+		order by v.create_time desc
+	</select>
+
+	<select id="queryMyFollow" resultMap="BaseResultMap"
+		parameterType="String">
+		select v.*,u.face_image as face_image,u.nickname as
+		nickname from videos v
+		left join users u on v.user_id = u.id
+		where
+		v.user_id in (select uf.user_id from users_fans uf where uf.fan_id =
+		#{userId})
+		and v.status = 1
+		order by v.create_time desc
+	</select>
+
 </mapper>

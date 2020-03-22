@@ -1,5 +1,6 @@
 package com.ly.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.catalina.User;
@@ -13,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ly.mapper.UsersFansMapper;
 import com.ly.mapper.UsersLikeVideosMapper;
 import com.ly.mapper.UsersMapper;
+import com.ly.mapper.UsersReportMapper;
 import com.ly.pojo.Users;
 import com.ly.pojo.UsersFans;
 import com.ly.pojo.UsersLikeVideos;
+import com.ly.pojo.UsersReport;
 import com.ly.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -35,6 +38,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UsersFansMapper usersFansMapper;
+	
+	@Autowired
+	private UsersReportMapper usersReportMapper;
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
@@ -141,6 +147,15 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void saveReport(UsersReport usersReport) {
+		Date date = new Date();
+		usersReport.setId(sid.nextShort());
+		usersReport.setCreateDate(date);
+		usersReportMapper.insertSelective(usersReport);
+		
 	}
 	
 	

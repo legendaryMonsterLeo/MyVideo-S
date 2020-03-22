@@ -1,4 +1,5 @@
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\enums\VideoStatusEnum.java
+C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\utils\TimeAgoUtils.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\utils\VideoJSONResult.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\WorkerIdStrategy.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\utils\FfmpegTest.java
@@ -13,6 +14,7 @@ C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\jav
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\Test.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\utils\IPv4Utils.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\IdWorker.java
+C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\enums\BgmOperatorTypeEnum.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\Id.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\org\n3r\idworker\utils\Props.java
 C:\Users\Administrator\eclipse-workspace\MyVideo-S\MyVideo-S-common\src\main\java\com\ly\utils\MyHttpClientUtil.java

@@ -3,6 +3,7 @@ package com.ly.service;
 import org.apache.catalina.User;
 
 import com.ly.pojo.Users;
+import com.ly.pojo.UsersReport;
 
 public interface UserService {
 	/**
@@ -62,4 +63,9 @@ public interface UserService {
 	 * @Description:查询userId与FanId是否有关系
 	 */
 	public boolean isYourFans(String userId,String fanId);
+	
+	/**
+	 * @Description:保存举报信息
+	 */
+	public void saveReport(UsersReport usersReport);
 }

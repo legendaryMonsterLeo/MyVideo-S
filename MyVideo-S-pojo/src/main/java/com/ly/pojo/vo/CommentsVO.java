@@ -1,9 +1,6 @@
 package com.ly.pojo.vo;
 
 import java.util.Date;
-import javax.persistence.*;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class CommentsVO {
     private String id;
@@ -12,6 +9,26 @@ public class CommentsVO {
      * 视频id
      */
     private String videoId;
+
+    private String fatherCommentId;
+
+    private Integer hasChild;
+
+    public Integer getHasChild() {
+        return hasChild;
+    }
+
+    public void setHasChild(Integer hasChild) {
+        this.hasChild = hasChild;
+    }
+
+    public String getFatherCommentId() {
+        return fatherCommentId;
+    }
+
+    public void setFatherCommentId(String fatherCommentId) {
+        this.fatherCommentId = fatherCommentId;
+    }
 
     /**
      * 留言者，评论的用户id

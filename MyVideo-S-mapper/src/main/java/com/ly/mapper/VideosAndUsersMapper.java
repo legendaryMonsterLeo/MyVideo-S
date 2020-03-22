@@ -5,11 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.ly.pojo.Videos;
+import com.ly.pojo.vo.ObserverVo;
 import com.ly.pojo.vo.VideosVO;
 import com.ly.utils.MyMapper;
 
 public interface VideosAndUsersMapper extends MyMapper<Videos>{
-	public List<VideosVO> queryAllVideoVoList(@Param("desc")String desc);
+	public List<VideosVO> queryAllVideoVoList(@Param("desc")String desc,@Param("userId")String userId);
 	
 	
 	/**
@@ -27,4 +28,19 @@ public interface VideosAndUsersMapper extends MyMapper<Videos>{
 	 * @Description: 查询关注的视频
 	 */
 	public List<VideosVO> queryMyFollowVideos(@Param("userId")String userId);
+	
+	/**
+	 * @Description: 查询我喜欢的视屏
+	 */
+	public List<VideosVO> queryMyLikeVideos(@Param("userId")String userId);
+	
+	/**
+	 * @Description: 查询我关注人的视屏
+	 */
+	public List<VideosVO> queryMyFollow(@Param("userId")String userId);
+	
+	/**
+	 * @Description:查询关注人三张封面图
+	 */
+	public List<ObserverVo> queryForFollow(@Param("userId")String userId);
 }

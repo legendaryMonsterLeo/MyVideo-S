@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ly.enums.VideoStatusEnum;
 import com.ly.pojo.Bgm;
+import com.ly.pojo.Comments;
 import com.ly.pojo.Users;
 import com.ly.pojo.Videos;
 import com.ly.pojo.vo.PublisherVideo;
@@ -53,7 +54,7 @@ public class VideoController extends BasicController {
 
 	@Autowired
 	private AsyMergeVideoService asyMergeVideoService;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -240,6 +241,46 @@ public class VideoController extends BasicController {
 		return VideoJSONResult.ok(result);
 	}
 
+	/**
+	 * @Description:展示我点赞过的视屏
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/showMyLike")
+	public VideoJSONResult showMyLike(String userId, Integer page, Integer pageSize) throws Exception {
+		if (StringUtils.isBlank(userId)) {
+			return VideoJSONResult.errorMsg("userID不能为空");
+		}
+		if (page == null) {
+			page = 1;
+		}
+		if (pageSize == null) {
+			pageSize = 6;
+		}
+		PageResult videoList = videoService.queryMyLikeVideos(userId, page, pageSize);
+		return VideoJSONResult.ok(videoList);
+	}
+
+	/**
+	 * @Description:展示我关注人的视屏
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/showMyFollow")
+	public VideoJSONResult showMyFollow(String userId, Integer page, Integer pageSize) throws Exception {
+		if (StringUtils.isBlank(userId)) {
+			return VideoJSONResult.errorMsg("userID不能为空");
+		}
+		if (page == null) {
+			page = 1;
+		}
+		if (pageSize == null) {
+			pageSize = 6;
+		}
+		PageResult videoList = videoService.queryMyFollow(userId, page, pageSize);
+		return VideoJSONResult.ok(videoList);
+	}
+
 	@ApiOperation(value = "获取热搜词", notes = "获取热搜词接口")
 	@PostMapping(value = "/getHot")
 	public VideoJSONResult getHot() throws Exception {
@@ -268,27 +309,82 @@ public class VideoController extends BasicController {
 		return VideoJSONResult.ok();
 	}
 
-	
 	@PostMapping("/queryPublisher")
 	public VideoJSONResult queryPublisher(String loginUserId, String videoId, String publisherId) throws Exception {
-		if(StringUtils.isBlank(publisherId)) {
+		if (StringUtils.isBlank(publisherId)) {
 			return VideoJSONResult.errorMsg("");
 		}
-		
-		//1.查询视屏发布者的信息
+
+		// 1.查询视屏发布者的信息
 		Users userInfo = userService.queryUserInfo(publisherId);
 		UsersVO publisher = new UsersVO();
 		BeanUtils.copyProperties(userInfo, publisher);
-		
-		//2.查询登录者是否已经点赞
+
+		// 2.查询登录者是否已经点赞
 		boolean userLikeVideo = userService.isUserLikeVideo(loginUserId, videoId);
-		
+
 		PublisherVideo publisherVideo = new PublisherVideo();
 		publisherVideo.setPublisher(publisher);
 		publisherVideo.setUserLikeVideo(userLikeVideo);
 		publisherVideo.setFollow(userService.isYourFans(publisherId, loginUserId));
-		
+
 		return VideoJSONResult.ok(publisherVideo);
+	}
+
+	@PostMapping("/getVideoFirstComments")
+	public VideoJSONResult getVideoFirstComments(String videoId, Integer page, Integer pageSize) {
+		if (StringUtils.isBlank(videoId)) {
+			return VideoJSONResult.ok();
+		}
+
+		// 分页查询视频列表，时间顺序倒序排序
+		if (page == null) {
+			page = 1;
+		}
+
+		if (pageSize == null) {
+			pageSize = 10;
+		}
+
+		PageResult list = videoService.getFirstComments(videoId, page, pageSize);
+		return VideoJSONResult.ok(list);
+	}
+
+	@PostMapping("/getVideoSecondComments")
+	public VideoJSONResult getVideoSecondComments(String videoId, String fatherCommentId) throws Exception {
+
+		if (StringUtils.isBlank(videoId)) {
+			return VideoJSONResult.ok();
+		}
+
+		PageResult list = videoService.getSecondComments(videoId, fatherCommentId);
+
+		return VideoJSONResult.ok(list);
+	}
+
+	@PostMapping("/saveComment")
+	public VideoJSONResult saveComment(@RequestBody Comments comment, String fatherCommentId, String toUserId)
+			throws Exception {
+		comment.setFatherCommentId(fatherCommentId);
+		comment.setToUserId(toUserId);
+
+		videoService.saveComment(comment);
+		return VideoJSONResult.ok();
+	}
+	
+	@PostMapping("/observer")
+	public VideoJSONResult getMyOb(String userId, Integer page, Integer pageSize) {
+		if (StringUtils.isBlank(userId)) {
+			return VideoJSONResult.errorMsg("userID不能为空");
+		}
+		if (page == null) {
+			page = 1;
+		}
+		if (pageSize == null) {
+			pageSize = 6;
+		}
+		PageResult videoList = videoService.queryForFollw(userId, page, pageSize);
+		return VideoJSONResult.ok(videoList);
 	}
 
 }
